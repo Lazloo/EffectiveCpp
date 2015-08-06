@@ -46,6 +46,7 @@ public:
 	};
 	~classC(){};
 
+
 	static const int NumTurns = -1;
 private:
 	static std::size_t count;
@@ -57,7 +58,7 @@ class classCopy{
 public:
 	classCopy(int i){
 		testVar = i;
-		std::cout<<"C works. i is: "<<i<<std::endl;
+		std::cout<<"classCopy works. i is: "<<i<<std::endl;
 	};
 	classCopy(const classCopy& object){
 		//testV
@@ -94,29 +95,33 @@ int main(void){
 	classB testB2(5);
 	
 	// Does work but no error
-	//classC testC();
-
+	std::cout << std::endl << "----- Class C without Input -----" << std::endl;
+	classC testC();
+	
 	// Does not work since testC was not correct initialized
 	//doSomethingC(testC);
 
 
 	// Explicite conversion
+	std::cout << "----- Explicite conversion -----" << std::endl;
 	doSomethingC(classC(1));
 
 	// Implicite conversion: Constructor of class C is automatically activated
+	std::cout << "----- Implicite conversion -----" << std::endl;
 	doSomethingC(1);
 
 	// Implicite conversion: Constructor of class B is not automatically activated
 	//doSomethingB(1);
 
 
-	std::cout<<"--------------- classCopy ---------------"<<std::endl;
+	std::cout << std::endl << "--------------- classCopy ---------------" << std::endl;
+	std::cout << "Create Objects (Obj1=1,Obj2=2)" << std::endl;
 	classCopy testClassCopy1(1);
 	classCopy testClassCopy2(2);
 
 	// Copy assignment operator
-	std::cout<<"### Copy assignment operator"<<std::endl;
-	testClassCopy1 = testClassCopy1;
+	std::cout<<"### Copy assignment operator Obj2=Obj2 & Obj1 = Obj2"<<std::endl;
+	testClassCopy2 = testClassCopy2;
 	testClassCopy1 = testClassCopy2;
 	std::cout<<"After copy testVar1: "<<testClassCopy1.testVar<<std::endl;
 	std::cout<<"After copy testVar2: "<<testClassCopy2.testVar<<std::endl;
@@ -132,9 +137,8 @@ int main(void){
 	// --- error C3892: 'testVar' : you cannot assign to a variable that is const
 	//testVar = 0.1;
 
-
+	std::cout << std::endl << "----- Just Counting -----" << std::endl;
 	classC testC3(1);
-
 	classC testC4(1);
 	classC testC5(1);
 	//std::cout << (&(const int classC::NumTurns)) << std::endl;

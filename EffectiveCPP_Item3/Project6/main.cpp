@@ -2,7 +2,7 @@
 #define GLM_FORCE_RADIANS
 ////Memory Leak
 #include <stdlib.h>
-#include "vld.h"
+//#include "vld.h"
 //#define _DEBUG
 
 #include <fstream>
@@ -42,7 +42,7 @@ public:
 		int iNew2 = const_cast<int&>(iNew);
 		iNew2++;
 		std::cout<<"iNew: "<<iNew<<std::endl;
-		std::cout<<"iNew++: "<<iNew2<<std::endl;
+		std::cout<<"iNew2++: "<<iNew2<<std::endl;
 		//std::cout<<"iTestNonconst: "<<iTestNonconst<<std::endl;
 		return iTestNonconst;
 	};
@@ -69,13 +69,15 @@ public:
 		{ return text[position]; } // const objects
 	char& operator[](std::size_t position)   // operator[] for
 		{ return text[position]; } // non-const objects
+	// & has no ffect
 	const int& getIntegerReference(void) const {return TestIntegerNonMutable;};
-	int& getIntegerReferenceMutable(void) const {return TestIntegerMutable;};
+	int& getIntegerReferenceMutable(void) const {return (++TestIntegerMutable);};
 	int& getIntegerReferenceMutableNonConst(void) {return TestIntegerMutable;};
 	//const char& getCharReference(void) const {return text[0];};
 	private:
 		std::string text;
 		int TestIntegerNonMutable;
+		// mutable allows to modify the variable even in a const-function
 		mutable int TestIntegerMutable;
 		//char * text2;
 };
@@ -98,32 +100,34 @@ int main(void){
 	std::cout<<"Pointer1: "<<pointer1<<std::endl;
 	std::cout<<"Pointer2: "<<pointer2<<std::endl;
 	pointer1 = greeting2;
-	std::cout<<"Pointer1 after change: "<<pointer1<<std::endl;
+	std::cout << "Pointer1 after change: " << pointer1 << std::endl << std::endl;
 
 	int iTest = 1;
 	int iTest2 = 30;
+	//int *const pointer3 = &iTest;
 	const int * pointer3 = &iTest;
 
 	std::cout<<"Pointer3: "<<*pointer3<<std::endl;
 	iTest = 10;
 	std::cout<<"Pointer3 after change: "<<*pointer3<<std::endl;
-	// Coes not work if "const int * pointer3 = &iTest;"
+	// Coes not work if "int *const pointer3 = &iTest;"
 	//*pointer3 = 20;
 	std::cout<<"Pointer3 after change 2: "<<*pointer3<<std::endl;
+	// Does work if "const int * pointer3 = &iTest;"
 	pointer3 = &iTest2;
-	std::cout<<"Pointer3 after change 3: "<<*pointer3<<std::endl;
+	std::cout << "Pointer3 after change 3: " << *pointer3 << std::endl << std::endl;
 
 
 	// STL iterators are modeled on pointers
 	std::vector<int> vec(20);
 
 	
-	std::vector<int>::iterator iter = // iter acts like a T* const
+	std::vector<int>::iterator iter = // iter acts like a "T* const"
 	vec.begin();
 	*(iter) = 10; // OK, changes what iter points to
 	//++iter; // error! iter is const
 
-	std::vector<int>::const_iterator cIter = // cIter acts like a const T*
+	std::vector<int>::const_iterator cIter = // cIter acts like a "const T*"
 	vec.begin();
 	//*cIter = 10; // error! *cIter is const
 	++cIter; // fine, changes cIter
@@ -139,7 +143,7 @@ int main(void){
 	testObjectA2.testFunction2(iTestVec);
 
 	std::string text1 = "Great";
-	std::cout<<text1[0]<<std::endl;
+	std::cout << std::endl << text1[0] << std::endl;
 	//(text1[0]) = "a";
 	//std::cout<<text1[0]<<std::endl;
 	//iTest*iTest2 = iTest;
@@ -157,7 +161,7 @@ int main(void){
 	char greeting5[] = "TT";
 	std::cout<<"greeting5: "<<greeting5<<std::endl;
 	greeting5[0] = 'X';
-	std::cout<<"greeting4 After Change: "<<greeting5<<std::endl;
+	std::cout << "greeting5 After Change: " << greeting5 << std::endl << std::endl;
 
 
 	int pInt = textBlockObject.getIntegerReference();
@@ -165,7 +169,10 @@ int main(void){
 	pInt++;
 	std::cout<<"pInt After ++: "<<pInt<<std::endl;
 	std::cout<<"textBlockObject.getIntegerReference(): "<<textBlockObject.getIntegerReference()<<std::endl;
-	std::cout<<"textBlockObject.getIntegerReferenceMutable(): "<<textBlockObject.getIntegerReferenceMutable()<<std::endl;
+	int pInt2 = textBlockObject.getIntegerReferenceMutable();
+	std::cout << "textBlockObject.getIntegerReferenceMutable(): " << textBlockObject.getIntegerReferenceMutable() << "\tpInt2: " << pInt2 << std::endl;
+	pInt2++;
+	std::cout << "textBlockObject.getIntegerReferenceMutable(): " << textBlockObject.getIntegerReferenceMutable() << "\tpInt2: " << pInt2 << std::endl;
 
 	const TextBlock textBlockObject2;
 	std::cout<<"textBlockObject2.getIntegerReferenceMutable(): "<<textBlockObject2.getIntegerReferenceMutable()<<std::endl;

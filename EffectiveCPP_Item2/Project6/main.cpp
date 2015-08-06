@@ -2,7 +2,7 @@
 #define GLM_FORCE_RADIANS
 ////Memory Leak
 #include <stdlib.h>
-#include "vld.h"
+//#include "vld.h"
 //#define _DEBUG
 
 #include <fstream>
@@ -15,7 +15,7 @@
 //#define CALL_WITH_MAX(a,b)f((a)>(b)?(a):(b););
 #define CALL_WITH_MAX(a, b) f((a) > (b) ? (a) : (b))
 
-// 
+// Template of an inline function
 template<typename T>
 inline T callWithMax(const T& a,const T& b){
 	return f(a>b?a:b);
@@ -32,7 +32,7 @@ public:
 		std::cout<<"B works. i is: "<<i<<std::endl;
 		count.resize(NumTurns2);
 		std::cout<<"Dimension of count is "<<count.size()<<std::endl;
-		std::cout<<"Dimension of count is "<<count2[4]<<std::endl;
+		std::cout<<"Entry #5 is "<<count2[4]<<std::endl;
 	};
 	~classB(){};
 
@@ -62,9 +62,9 @@ public:
 	static const int NumTurns = -1;
 private:
 	
-	int count;
+	static int count;
 };
-
+int classC::count = 0;
 
 //using namespace std;
 int main(void){
@@ -73,19 +73,21 @@ int main(void){
 	classC testC1(1);
 	std::cout<<&(classC::NumTurns)<<std::endl;
 
+	std::cout << " --- Use enum ---" << std::endl;
 	const int aa=20;
 	enum{aaa=20};
 	std::cout<<"aaa: "<<aaa<<std::endl;
-	std::cout<<"&aaa: "<<&aa<<std::endl;
+	// There exists no memory adress for enum object aaa and the defined const TESTVAR but for the constant aa
+	std::cout<< "Adress of const: " << "&aa(not aaa): " << &aa << std::endl;
 	int a1 = 1,b1=0;
 	std::cout<<"a1: "<<a1<<std::endl;
-	std::cout<<"CALL_WITH_MAX Evaluation b1 is smaller: "<<CALL_WITH_MAX(++a1,b1)<<std::endl;
-	std::cout<<"CALL_WITH_MAX Evaluation b1 is bigger: "<<CALL_WITH_MAX(++a1,b1+10)<<"\ta1: "<<a1<<std::endl;
-	std::cout<<"CALL_WITH_MAX Evaluation b1 is bigger: "<<CALL_WITH_MAX(a1++,b1)<<"\ta1: "<<a1<<std::endl;
+	std::cout << "CALL_WITH_MAX Evaluation b1 is smaller (a1 is incremented twice): " << CALL_WITH_MAX(++a1, b1) << "\ta1: " << a1 << std::endl;
+	std::cout<<"CALL_WITH_MAX Evaluation b1 is bigger (a1 is incremented once): "<<CALL_WITH_MAX(++a1,b1+10)<<"\ta1: "<<a1<<std::endl;
+	std::cout<<"CALL_WITH_MAX Evaluation b1 is bigger(a1 is incremented twice): "<<CALL_WITH_MAX(a1++,b1)<<"\ta1: "<<a1<<std::endl;
 
 	int a2 = 1,b2=0;
 	std::cout<<"a2: "<<a2<<std::endl;
-	std::cout<<"callWithMax Evaluation b2 is smaller: "<<callWithMax(++a2,b2)<<std::endl;
+	std::cout << "callWithMax Evaluation b2 is smaller: " << callWithMax(++a2, b2) << "\ta2: " << a2 << std::endl;
 	std::cout<<"callWithMax Evaluation b2 is bigger: "<<callWithMax(++a2,b2+10)<<"\ta2: "<<a2<<std::endl;
 	std::cout<<"callWithMax Evaluation b2 is bigger: "<<callWithMax(a2++,b2)<<"\ta2: "<<a2<<std::endl;
 
