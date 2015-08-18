@@ -2,7 +2,7 @@
 #define GLM_FORCE_RADIANS
 ////Memory Leak
 #include <stdlib.h>
-#include "vld.h"
+//#include "vld.h"
 //#define _DEBUG
 
 #include <fstream>
