@@ -2,7 +2,7 @@
 #define GLM_FORCE_RADIANS
 ////Memory Leak
 #include <stdlib.h>
-#include "vld.h"
+//#include "vld.h"
 //#define _DEBUG
 
 #include <fstream>
@@ -57,9 +57,59 @@ public:
 private:
 };
 
+// ##############################
+class interfaceClass1
+{
+public:
+	interfaceClass1(){ std::cout << "Interface 1" << std::endl; };
+	~interfaceClass1(){};
+
+private:
+	virtual void virtualFct1(void) = 0;
+};
+
+class interfaceClass2
+{
+public:
+	interfaceClass2(){ std::cout << "Interface 2" << std::endl; };	
+	~interfaceClass2(){};
+
+private:
+	virtual void virtualFct2(void) = 0;
+};
+
+class abstractCalss
+{
+public:
+	abstractCalss(){ std::cout << "Interface 2" << std::endl; };	
+	~abstractCalss(){};
+
+private:
+	virtual void virtualFct3(void) = 0;
+	void realFct3(void){ std::cout << "Real Function"<<std::endl; };
+};
+
+// Multiple Inherince from an abstract object(not only virtual function) does not work!
+//class classDerivedFromInterfaces : public interfaceClass1, public interfaceClass2, public abstractCalss
+class classDerivedFromInterfaces : public interfaceClass1, public interfaceClass2
+{
+public:
+	classDerivedFromInterfaces(){ std::cout << "Class Multiple Inherince" << std::endl; };
+	~classDerivedFromInterfaces(){};
+
+private:
+	virtual void virtualFct1(void){ std::cout << "virtualFct1" << std::endl; };
+	virtual void virtualFct2(void){ std::cout << "virtualFct2" << std::endl; };
+};
+// ##############################
+
 int main(void){
 	testDerivedClass testObject;
 	testDerivedClass2 testObject2(13);
+
+	std::cout << std::endl;
+	std::cout << "----Multiple Inherince----" << std::endl;
+	classDerivedFromInterfaces testObjectMultipleinherince;
 	system("Pause");
 	return 0;
 }
