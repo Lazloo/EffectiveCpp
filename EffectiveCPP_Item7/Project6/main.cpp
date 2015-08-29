@@ -74,25 +74,31 @@ public:
 virtual ~AWOV() = 0; // declare pure virtual destructor
 };
 
-class AWOV2 { // AWOV = “Abstract w/o Virtuals”
+class AWOV2 :public AWOV { // AWOV = “Abstract w/o Virtuals”
+//class AWOV2 { // AWOV = “Abstract w/o Virtuals”
 public:
 	//~AWOV2(){}; // declare pure virtual destructor
 };
 
 int main(void){
 	// No Memory Leak since references 
+	std::cout << "Create References" << std::endl;
 	class baseClassNotVirtual baseObject1;
 	class derivedClassNotVirtual derivedObject1;
+	std::cout << std::endl;
 
-	// No memory leak since pointer are not created by operator new
+	// No memory leak since pointer are not created by operator new. Constructor is not called
+	std::cout<<"Create Pointer" << std::endl;
 	baseClassNotVirtual* baseObjectPtr1;
 	class derivedClassNotVirtual* derivedObjectPtr1;
+	std::cout << std::endl;
 
 	// No Memory Leak since ptr is deleted
 	baseClassNotVirtual* baseObjectPtr2 = new baseClassNotVirtual;
 	// No Memory Leak if derivedObjectPtr2 is deleted and not baseObjectPtr2_1
 	derivedClassNotVirtual* derivedObjectPtr2 = new derivedClassNotVirtual;
 	baseClassNotVirtual* baseObjectPtr2_1 = derivedObjectPtr2;
+
 	// !!! Memory Leak since only base destructor is called iTest is not destroyed.
 	// However this is not detected by current Memory Leak Detector
 	derivedClassNotVirtual* derivedObjectPtr3 = new derivedClassNotVirtual;
@@ -104,14 +110,17 @@ int main(void){
 	// You can only declare and define AWOV2 object which class is derived from AWOV
 	// AWOV is abstract and cannot be used for the declaration and definition of Objects
 	//AWOV abstactObject;
-	AWOV2 nonAbstactObject;
+	//AWOV2 nonAbstactObject;
 
 	//baseObjectPtr3 = derivedObjectPtr2;
 
+	// Deleting only baseObjectPtr2 is not enough. If delete derivedObjectPtr2 is not done -> Memory Leak
 	delete baseObjectPtr2;
-	delete derivedObjectPtr2;
+	//delete derivedObjectPtr2;
+
 	// Only Base Destructor is called
 	delete baseObjectPtr3_1;
+	//delete derivedObjectPtr3;
 	// Both Base Derived Destructor are called
 	delete baseObjectPtr41;
 

@@ -12,17 +12,45 @@
 #include <stdio.h>
 
 class testBaseClass{
-public: 
+public:
 	//# Does not work since virtual function is not yet defined
 	//testBaseClass(){virtualFct();};
 	//# Will lead to an runtime error
 	//testBaseClass(){testFunction();};
 	testBaseClass(){};
 	~testBaseClass(){};
-	
+
 private:
-	void testFunction(){virtualFct();};
-	virtual void virtualFct(void)=0;
+	void testFunction(){ virtualFct(); };
+	virtual void virtualFct(void) = 0;
+};
+
+class testInterface{
+public:
+	testInterface(){};
+	~testInterface(){};
+
+private:
+	virtual void virtualFct1(void) = 0;
+};
+
+class testInterface2{
+public:
+	testInterface2(){};
+	~testInterface2(){};
+
+private:
+	virtual void virtualFct2(void) = 0;
+};
+
+class testDerivedFromInterface :private testInterface&private testInterface2{
+public:
+	testDerivedFromInterface(){};
+	~testDerivedFromInterface(){};
+
+private:
+	virtual void virtualFct1(void){ std::cout << "virtualFct1" << std::endl; };
+	virtual void virtualFct2(void){ std::cout << "virtualFct2" << std::endl; };
 };
 
 class testDerivedClass:private testBaseClass{
@@ -58,7 +86,10 @@ private:
 };
 
 int main(void){
+	// testDerivedClass is dervied from an abract function (contains one virtual function)
+	// Virtual function is completed and called in the constructor of testDerivedClass
 	testDerivedClass testObject;
+	// Standard derived class. No virtual function exist in basis class
 	testDerivedClass2 testObject2(13);
 	system("Pause");
 	return 0;
