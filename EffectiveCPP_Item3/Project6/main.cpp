@@ -110,7 +110,7 @@ int main(void){
 	std::cout<<"Pointer3: "<<*pointer3<<std::endl;
 	iTest = 10;
 	std::cout<<"Pointer3 after change: "<<*pointer3<<std::endl;
-	// Coes not work if "int *const pointer3 = &iTest;"
+	// Does not work if "int *const pointer3 = &iTest;"
 	//*pointer3 = 20;
 	std::cout<<"Pointer3 after change 2: "<<*pointer3<<std::endl;
 	// Does work if "const int * pointer3 = &iTest;"

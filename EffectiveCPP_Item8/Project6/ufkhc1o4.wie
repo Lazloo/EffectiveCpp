@@ -33,7 +33,7 @@ public:
 			catch(...){
 				std::cout<<"Exception in destructor occured"<<std::endl;
 				std::system("Pause");
-				std::abort(); 
+				//std::abort(); 
 			}
 			std::cout<<"classWithException was destroyed"<<std::endl;
 		}
@@ -67,16 +67,14 @@ int main(void){
 
 
 	std::vector<int> *testVec(0);
+
+	std::vector<classWithException*> *testVec(0);
+	testVec->push_back(exceptionObject3);
 	delete testVec; // C++ does not allow excpetions in the destructor
 
-	std::vector<classWithException*> *testVec2(0);
-	//testVec2->push_back(exceptionObject3);
-	//delete testVec; // C++ does not allow excpetions in the destructor
 
-	// No Exception
-	delete exceptionObject;
-	// Exception
-	delete exceptionObject2;
+	//delete exceptionObject;
+	//delete exceptionObject2;
 	//delete exceptionObject3;
 
 	
