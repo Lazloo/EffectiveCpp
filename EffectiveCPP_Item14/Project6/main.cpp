@@ -22,12 +22,12 @@ class Lock{
 public: 
 	explicit Lock(std::mutex *pm):mutexPtrMember(pm){
 		mutexPtrMember->lock();
-		std::cout<<"After Lock Class"<<std::endl;
+		std::cout<<"Mutex Locked"<<std::endl;
 	};
 
 	~Lock(){
 		mutexPtrMember->unlock();
-		std::cout<<"After Unlock Class"<<std::endl;
+		std::cout<<"Mutex unlocked"<<std::endl;
 	};
 	
 private:
@@ -96,15 +96,21 @@ void testFctLockClass(void) {
 //}
 
 int main(void){
-	std::thread th1(testFctLockClass);
-	//std::thread th2(testFctLock2Class);
-	th1.join();
-	//th2.join();
+
+	// locks too mutex object (mutexPtr,foo) using the defined Lock Class
+	std::thread th1(testFctLockClass); // main and th1 are now running parallel
+	th1.join(); // pauses until th1 finishes
 
 	std::mutex m1, m2;
-	std::mutex *mPtr1,*mPtr2;
+	//std::mutex m3;
+
+	
+	// Mutex Error as soon as program has ended
 	std::lock(m1, m2);
-	std::lock(*mPtr1, *mPtr1);
+
+	//std::mutex *mPtr1,*mPtr2;
+	//std::lock(*mPtr1, *mPtr1);
+
 	system("Pause");
 	return 0;
 }
