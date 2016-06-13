@@ -31,7 +31,7 @@ public:
 			}
 			// Terminating programm - avoid problems and unexpected behaviour afterwards
 			catch(...){
-				std::cout<<"Exception in destructor occured"<<std::endl;
+				std::cout<<"Exception in destructor occurred"<<std::endl;
 				std::system("Pause");
 				std::abort(); 
 			}
@@ -48,7 +48,7 @@ public:
 			}
 			// Swallow Strategy - Do nothing but protocol exception
 			catch(...){
-				std::cout << "Exception occured during closing" << std::endl;
+				std::cout << "Exception occurred during closing" << std::endl;
 			}
 		}
 	};
